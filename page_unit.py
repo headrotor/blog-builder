@@ -354,9 +354,14 @@ class PageUnit(object):
         self.write_html_file(dest_file, self.html)
 
     def copy_if_newer(self, src, dest):
-        if os.path.getctime(src) > os.path.getctime(dest):
-            if os.path.isdir(dest):
-                dest = os.path.join(dest, os.path.basename(src))
+        # if desitnation exists:
+        if os.path.isfile(dest):
+            if os.path.getctime(src) > os.path.getctime(dest):
+                if os.path.isdir(dest):
+                    dest = os.path.join(dest, os.path.basename(src))
+                shutil.copy(src,dest)
+                self.modified.append(dest)
+        else: 
             shutil.copy(src,dest)
             self.modified.append(dest)
 
@@ -370,7 +375,7 @@ class PageUnit(object):
             path_glob = os.path.join(src_path, '*' + ext)
             media_files = glob.glob(path_glob)
             for f in media_files:
-                ###print("   copying {} to {}".format(f, html_path))
+                print("   copying {} to {}".format(f, html_path))
                 self.copy_if_newer(f,html_path)
                 root, ext = os.path.splitext(os.path.basename(f))
                 # exclude thumbs from list so we don't render them twice

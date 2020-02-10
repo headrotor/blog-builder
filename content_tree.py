@@ -24,8 +24,6 @@ class ContentTree(object):
         self.updated = []
         self.updated_tags = {}
 
-
-
         # preload some templates
         self.template_dict = self.load_templates()
         for key in self.template_dict:
@@ -98,7 +96,7 @@ class ContentTree(object):
 
             for cf in files:
                 root, ext = os.path.splitext(cf)
-                if ext == '.txt':
+                if ext == self.gdict['content_ext']:
                     self.add_page(path, cf, subdirs, files)
                     content_file_count += 1
 
@@ -131,7 +129,7 @@ class ContentTree(object):
         punit.sort_subdirs()
 
         punit.files = files     # files in this dir
-
+        
         # add to array and dict so we can find them again
         self.pages.append(punit)
         self.page_dict[punit.html_path] = punit

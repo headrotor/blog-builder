@@ -11,6 +11,8 @@ global_dict = {
     'html_root': '/blog/',
     # root for this tree ")
     'html_top': '/www/blog/',
+    # content file extension
+    'content_ext': '.md',
     # Rss stuff
     'rss_file': 'feed.rss',
     'rss_icon': '/www/public/RSSicon.png',
