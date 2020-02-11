@@ -160,6 +160,11 @@ class ContentTree(object):
 
         #print(" ".join(p.html_path for p in self.level1))
 
+        # sort tags (topics) alphabetically
+        stags = sorted(self.tags.items())
+
+        self.tags = dict(stags)
+
         for t, val in self.tags.items():
             val.sort()
             #print("tag {} has pages: ".format(t))
@@ -223,7 +228,7 @@ class ContentTree(object):
                 if t in self.updated_tags.keys():
                     punit.render(self.template_dict, self.page_dict)
                     self.updated.append(punit.dest_file)
-                    logging.info(f"incrementally updated {punit.dest_file}") 
+                    logging.info("incrementally updated {}".format(punit.dest_file))
             else:
                 punit.render(self.template_dict, self.page_dict)
 
@@ -258,13 +263,13 @@ class ContentTree(object):
                                  
         with open(rss_path, "w", encoding='utf-8') as rss_file:
             rss_file.write(rss_xml)
-        logging.info(f"wrote rss file {rss_path}")
+        logging.info("wrote rss file {}".format(rss_path))
            
 
     def generate_upload_script(self):
 
         for u in self.updated:
-            print(f"updated {u}")
+            print("updated {}".format(u))
 
 
 if __name__ == '__main__':
