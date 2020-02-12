@@ -92,8 +92,8 @@ if __name__ == '__main__':
         logging.info("dry run: no output files generated.")
     else:
         ctree.dump_loop() #generate output
-        #if 'rss_file' in global_dict.keys():
-        ctree.generate_rss()
+        if 'rss_file' in global_dict.keys():
+            ctree.generate_rss()
         ctree.generate_upload_script()
 
 

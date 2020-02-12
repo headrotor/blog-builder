@@ -18,7 +18,6 @@ global_dict = {
     'rss_icon': '/www/public/RSSicon.png',
     # find templates in this dir
     'template_dir': '/home/jtf/gith/www_source/blog-source/templates',
-    #'template_dir': './blogtemplates',
     # generate warning if thumbnail not found
     'warn_thumbnail':False,
     'date': '0/0/1970',
@@ -27,11 +26,6 @@ global_dict = {
     'name': 'Jonathan Foote',
     'hostname': 'rotormind.com',
     'blog_title': 'Waxing Prolix',
-    'month': 'unset',
-    'day': 'unset',
-    'weekday': 'unset',
-    'time' : 'unset time',
-    'keywords': 'unset keywords'
-
 }
+
 
