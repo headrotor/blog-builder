@@ -15,7 +15,7 @@ global_dict = {
     'content_ext': '.md',
     # Rss stuff
     'rss_file': 'feed.rss',
-    'rss_icon': '/www/public/RSSicon.png',
+    'rss_icon': '/public/RSSicon.png',
     # find templates in this dir
     'template_dir': '/home/jtf/gith/www_source/blog-source/templates',
     # generate warning if thumbnail not found

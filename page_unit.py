@@ -369,7 +369,7 @@ class PageUnit(object):
         # make a copy of images, etc in local path
         ###print("copy media from  {}  to {}".format(src_path, html_path))
         images = []
-        media = ['.jpg', 'jpeg', '.png', '.gif', '.mp3']
+        media = ['.jpg', 'jpeg', '.png', '.gif', '.mp3' , 'mp4', 'html']
         media.extend([s.upper() for s in media])
         for ext in media:
             path_glob = os.path.join(src_path, '*' + ext)
