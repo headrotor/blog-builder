@@ -17,7 +17,7 @@ global_dict = {
     'rss_file': 'feed.rss',
     'rss_icon': '/public/RSSicon.png',
     # find templates in this dir
-    'template_dir': '/home/jtf/gith/www_source/blog-source/templates',
+    'template_dir': '/home/jtf/gith/www_source/0.blog-source/templates',
     # generate warning if thumbnail not found
     'warn_thumbnail':False,
     'date': '0/0/1970',
