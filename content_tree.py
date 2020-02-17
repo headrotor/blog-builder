@@ -268,8 +268,9 @@ class ContentTree(object):
 
     def generate_upload_script(self):
 
-        for u in self.updated:
-            print("updated {}".format(u))
+        pass
+        # for u in self.updated:
+        #     print("updated {}".format(u))
 
 
 if __name__ == '__main__':
