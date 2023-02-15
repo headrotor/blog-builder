@@ -102,7 +102,8 @@ class ContentTree(object):
 
             if content_file_count == 0:
                 # OK to have subdirs of crap, just make sure that's OK
-                logging.warning("no content file found in {}".format(src_path))
+                if src_path is not None:
+                    logging.warning("no content file found in {}".format(src_path))
 
             if content_file_count > 1:
                 # May be OK but warn anyway

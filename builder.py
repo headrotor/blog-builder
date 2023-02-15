@@ -1,3 +1,5 @@
+#!/home/jtf/anaconda3/bin/python
+
 """ builder.py: static website generator influenced by staceyapp.com
     Copyleft Jonathan Foote 2019
 """
