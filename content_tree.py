@@ -208,6 +208,10 @@ class ContentTree(object):
     def dump_loop(self):
         """ loop through list of pages and figure out pathname & children """
 
+        # sort tags so they are in alphabetical order
+        self.tag_dict = dict(sorted(self.tag_dict.items(), key=lambda x: x[0].lower()))
+                             
+        # render a page for each child
         for punit in self.pages:
             punit.ldict['tag_dict'] = self.tag_dict
             punit.ldict['level1'] = self.level1
@@ -218,6 +222,7 @@ class ContentTree(object):
                 for t in punit.tags:
                     self.updated_tags[t] = True
 
+        # render a page for each tag that references all tagged pages
         for punit in self.tag_pages:
             #punit.ldict['tags'] = self.tags
             punit.ldict['tag_dict'] = self.tag_dict

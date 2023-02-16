@@ -296,7 +296,6 @@ class PageUnit(object):
 #        self.permalink = "http://"  + self.gdict['hostname'] + os.path.join(self.html_path, self.fname)
 
         self.permalink = "http://"  + self.gdict['hostname'] + self.html_path
-        print(self.permalink)
         
         self.ldict.update(hdict)
 
