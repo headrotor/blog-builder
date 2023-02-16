@@ -1,0 +1,70 @@
+<%namespace name="blog" file="/partials.html" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html dir="ltr">
+ 
+${blog.header()}
+ 
+<div id="content">
+      
+<!-- Main Column -->
+<div id="center" class="column">
+
+  <a href="${page_path}">
+  % if tagname == "lamps":
+  <h1>Posts tagged <em>l&auml;mps:</em></h1>
+  %else:
+  <h1>Posts tagged <em>${tagname}:</em></h1>
+  %endif
+  </a>
+
+  <ul>
+    %for i, c in enumerate(children):
+    <li>
+      <p>${c.ldict['date']}&nbsp<a href="${c.html_path}">${c.title}</a> </p>
+    </li>
+    %endfor
+  </ul>
+  
+  
+</div>
+
+<div id="left" class="column">
+
+${blog.archives()}
+
+${blog.topics()}
+
+</div>
+
+<div id="right" class="column">
+
+<!--
+
+<h1>Blogroll</h1>
+<ul>
+      <li>
+      <a href="">Interesting Blog</a>
+    </li>
+      <li>
+      <a href="">More Interestingness</a>
+    </li>
+
+      <li>
+      <a href="">Oh look another one</a>
+    </li>
+  
+</ul>
+
+<hr>
+
+-->
+
+</div>
+</div>
+
+<div id="footer"></div>
+<!-- end blogfoot.html -->
+
+</body>
+</html>
+

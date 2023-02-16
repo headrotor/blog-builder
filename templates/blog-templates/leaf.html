@@ -1,0 +1,111 @@
+<%namespace name="blog" file="/partials.html" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html dir="ltr">
+  
+  
+  ${blog.header()}
+
+
+  <div id="content">
+    
+    <!-- Main Column -->
+    <div id="center" class="column">
+      
+
+      <h2>${weekday}, ${month} ${day}, ${year}</h2>
+
+      <h1>${title}</h1>
+      <p></p>
+      %for i in images:
+      %if i.split(".")[0] == "blogimg" or  i.split("-")[0] == "blogimg":
+      <center>
+      <div class="image">
+	<a href=${html_path}/${i}>
+	<img src="${i}" alt="${i}">
+	</a>
+      </div>
+      </center>
+      %endif
+      %endfor
+
+
+
+      <div class="blogPost">
+	<!-- begin content -->
+	${content_html}
+	<!-- end content -->
+      </div>
+      
+      <div class="byline"><a href="${permalink}" title="permalink">
+	  &#9879; permalink</a> posted by ${name} at ${time}
+      </div>
+      
+      
+      
+      % if len(tags) > 0:
+      <div class="bodytags">Tagged: 
+	
+	%if isinstance(tags,str):
+	
+	<a href="${tag_dict[tags].html_path}/${tag_dict[tags].fname}">${tags}</a>
+	
+	%else: 
+	%for t in tags:
+	<a href="${tag_dict[t].html_path}/${tag_dict[t].fname}">${t}</a> 
+	
+	%endfor
+	%endif
+	
+      </div>
+      %endif
+      
+      <br/>
+      <hr/>
+      
+    </div>
+    
+    <!-- start blogfoot.html -->
+    <div id="left" class="column">
+      
+      ${blog.archives()}
+      
+      ${blog.topics()}
+
+      <a type="application/rss+xml" href="${html_root}/${rss_file}"><img alt="RSSicon.png" src="${rss_icon}" width="16" height="16">&nbsp RSS feed</a>
+      
+      
+    </div>
+    
+
+    <div id="right" class="column">
+      
+      <!--
+	  
+	  <h1>Blogroll</h1>
+	  <ul>
+	    <li>
+	      <a href="">Interesting Blog</a>
+	    </li>
+	    <li>
+	      <a href="">More Interestingness</a>
+	    </li>
+	    
+	    <li>
+	      <a href="">Oh look another one</a>
+	    </li>
+	    
+	  </ul>
+	  
+	  <hr>
+	  
+	  -->
+      
+    </div>
+  </div>
+
+<div id="footer"></div>
+<!-- end blogfoot.html -->
+
+</body>
+</html>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+
+  <title>${blog_title} by ${name}</title>
+  <subtitle></subtitle>
+  <link href="http://${hostname}/blog/feed.rss" hreflang="en" rel="self" type="application/atom+xml"/>
+  <link href="http://rotormind.com/blog/" hreflang="en" rel="alternate" type="text/html"/>
+  
+  <updated>${update_time}</updated>
+  <generator uri="http://github.com/rotormind" version="0.1">Homebrew CMS hack</generator>
+
+  <author>
+    <name>${name}</name>
+    <uri>http://${hostname}/${html_root}</uri>
+  </author>
+
+   <id>tag:${hostname},{html_root} </id>
+
+  <rights>cc ${year} ${name}</rights>

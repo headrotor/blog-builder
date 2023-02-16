@@ -1,0 +1,13 @@
+ <entry>
+   <title>${title}</title>
+   <id>tag:rotormind.com,${html_path} </id>
+   <updated>${update_time}</updated>
+   <summary>${year}</summary>
+   <link rel="alternate" type="text/html" href="${html_path}" />
+   <content type="xhtml" xml:lang="en">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+	  (see link for content)
+      </div>
+   </content>
+</entry>
+

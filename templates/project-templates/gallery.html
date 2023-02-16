@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- begin port_head.html -->
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="MSSmartTagsPreventParsing" content="true">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="${public}favicon.ico">
+  
+  <link rel="stylesheet" href="${public}css/screen.css" type="text/css" media="screen"> 
+  <title>Jonathan Foote Portfolio</title>
+  
+  
+</head>
+
+
+<body>
+  
+  <div id="container">
+    <div id="header">
+      <span>
+	<a href="/">Jonathan Foote</a>
+      </span>
+      <ul>
+	<li> &nbsp&nbsp<a href="${html_top}contact/">Contact</a>	</li> 
+	<li> &nbsp&nbsp<a href="${html_top}Bio/">Bio</a>	</li> 
+	<li> <a href="${html_top}../../blog">Blog</a> </li>
+      </ul>
+      <h2 class="breadcrumbs">
+	<a href="${html_top}/portfolio">Selected Projects</a>
+	% for p in parents:
+	&#8680; <a href="${p.html_path}">${p.title}</a>\
+	% endfor
+      </h2>
+    </div>
+    
+    
+    <hr>
+    
+  </div>
+  
+  <!-- end porthead.html -->
+  <!-- this is gallery.html template -->
+  
+  <div id="container">
+    <p>
+      <hr>
+      <div id="content">
+	<!-- start category_lists -->
+	
+	<!-- foreach $root do -->
+	<!--   if $children do -->
+	<p class="category col two"><em>${title}</em></p>
+	<ul class="project-list col seven">
+	  ##% for child in child_paths:
+	  %for i, c in enumerate(children):
+	  <li> <!-- this from gallery template in loop --> 
+    	    <div class="thumbnail col two">
+	      <a href="${c.html_path}"><img src="${c.slug}/${c.thumbnail}" alt="${c.title}"></a>
+	      
+    	    </div>
+    	    <div class="summary col two">
+	      
+	      ##<p><a href="${c.html_path}">${c.ldict['title']}</a></p>
+	      <p><a href="${c.html_path}">${c.ldict['title']}</a></p>
+	      %if 'date' in c.ldict:
+	          <p><em>${c.ldict['date']}</em></p>
+	      %endif
+	      %if 'keywords' in c.ldict:
+	      <p><em class="background">&ndash; ${c.ldict['keywords']}</em></p>
+	      %endif
+	      
+    	    </div>
+    	  </li>
+	  % endfor
+	  <!-- endforeach -->
+	</ul>
+	<!--   endif -->
+	<!-- endforeach -->
+	
+      </div>
+    </p>
+    <hr>
+    <!-- portfoot.html -->
+    <!-- start port_foot.html -->
+    
+    <p id="footer" class="col six">&copy; Copyleft  ${render_year} ${name}
+<!--
+ <a class="atom-rss" href="${html_root}feed/">RSS</a>
+-->
+<br>
+      
+      <!-- end port_foot.html -->
+      
+  </div>
+</body>
+</html>

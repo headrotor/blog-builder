@@ -293,8 +293,11 @@ class PageUnit(object):
         info_str += ' using "{}" template'.format(self.template_name)
         logging.info(info_str)
 
-        self.permalink = "http://"  + self.gdict['hostname'] + os.path.join(self.html_path, self.fname)
+#        self.permalink = "http://"  + self.gdict['hostname'] + os.path.join(self.html_path, self.fname)
 
+        self.permalink = "http://"  + self.gdict['hostname'] + self.html_path
+        print(self.permalink)
+        
         self.ldict.update(hdict)
 
         self.ldict['permalink'] = self.permalink 

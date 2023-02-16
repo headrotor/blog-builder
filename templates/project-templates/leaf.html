@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<!-- begin port_head.html -->
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="MSSmartTagsPreventParsing" content="true">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="${html_root}/favicon.ico">
+  
+  <link href='http://fonts.googleapis.com/css?family=Arima' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="${public}/css/screen.css" type="text/css" media="screen"> 
+  <title>Jonathan Foote Portfolio</title>
+</head>
+
+
+<body>
+
+  <div id="container">
+    <div id="header">
+
+    <div id="header">
+      <span>
+	<a href="/">Jonathan Foote</a>
+      </span>
+      <ul>
+	<li> &nbsp&nbsp<a href="${html_top}contact/">Contact</a>	</li> 
+	<li> &nbsp&nbsp<a href="${html_top}Bio/">Bio</a>	</li> 
+	<li> <a href="${html_top}../../blog">Blog</a> </li>
+      </ul>
+      <h2 class="breadcrumbs">
+	<a href="${html_top}/portfolio">Selected Projects</a>
+	% for p in parents:
+	&#8680; <a href="${p.html_path}">${p.title}</a>\
+	% endfor
+      </h2>
+    </div>
+<hr>
+
+</div>
+
+<div id="container">
+  <div id="content" class="col nine">
+
+    <p class="para col two"><em class="background"></em></p>
+    <div class="description col seven">
+      <h2><a href="${html_path}">${title}</a></h2>
+
+      % for i in images:
+      <div class="image">
+	<a href=${html_path}/${i}>
+	<img src="${html_path}/${i}" alt="${i}" width=540>
+	</a>
+      </div>
+      % endfor
+      ${content_html}
+    </div>
+  </div>
+  <hr>
+  <p id="footer" class="col six">&copy; Copyleft  ${render_year} ${name} 
+<!--
+ <a class="atom-rss" href="${html_root}feed/">RSS</a>
+-->
+<br>
+</div>
+</body>
+</html>
+
