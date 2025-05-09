@@ -58,5 +58,8 @@ global_dict = {
     'hostname': 'rotormind.com',
     # 'blog_title': Specific title for the blog section.
     'blog_title': 'Waxing Prolix',
+    # True to debug template usage
+    'debug_templates': True
+    
 }
 

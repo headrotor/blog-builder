@@ -1,6 +1,9 @@
+# In content_tree.py
+
 import os
 import logging
 from datetime import datetime as dt
+from urllib.parse import urljoin
 from mako.template import Template
 from mako.lookup import TemplateLookup
 from mako import exceptions # For Mako template exceptions, useful for debugging rendering issues.
@@ -161,7 +164,8 @@ class ContentTree(object):
             subdirs (list): List of subdirectory names in `path`.
             files (list): List of filenames in `path`.
         """
-        punit = PageUnit(path, self.gdict)
+        # Regular content pages are NOT virtual
+        punit = PageUnit(path, self.gdict, is_virtual=False) 
         if punit.num < 0: # If the directory name doesn't start with a number (e.g., '0.slug'), skip it.
             logging.debug(f"Skipping un-numbered path: {path}") # Changed to debug as this might be intentional for auxiliary dirs.
             return
@@ -236,7 +240,8 @@ class ContentTree(object):
         """
         date_string = page_unit.ldict.get('date')
         # Prepare file info for logging. Use content_file for the actual source file.
-        file_info_for_log = f" in file: {os.path.relpath(page_unit.content_file, self.src_root)}" if page_unit and page_unit.content_file else f" for virtual page: {page_unit.html_path}"
+        # Use os.path.relpath to make log messages cleaner.
+        file_info_for_log = f" in file: {os.path.relpath(page_unit.content_file, self.gdict['src_root'])}" if page_unit and page_unit.content_file else f" for virtual page: {page_unit.html_path}"
 
         # Ensure date_string is stripped of any leading/trailing whitespace
         # that might interfere with strict parsing.
@@ -273,27 +278,34 @@ class ContentTree(object):
             val.sort() # Ensure pages are sorted for consistency on tag pages.
             slug = quote_plus(t) # URL-encode the tag name to create a clean slug.
 
-            # Construct destination paths for the tag page.
-            tag_dest = os.path.join(self.gdict['dest_root'], 'tags') # Filesystem path.
-            tag_html_base_path = os.path.join(self.gdict['html_root'], 'tags') # HTML path for the 'tags' directory.
+            # Construct dummy source path for virtual page, it doesn't physically exist for copying media.
+            dummy_src_path = os.path.join(self.gdict['src_root'], 'tags', slug)
 
-            punit = PageUnit(os.path.join(self.gdict['src_root'], 'tags', slug), self.gdict) # Dummy src_path, as it's virtual.
+            # Tag pages are virtual and do not have a physical source directory for media copying.
+            punit = PageUnit(dummy_src_path, self.gdict, is_virtual=True) 
             punit.slug = slug # Set the URL slug for the tag page.
             punit.fname = "index.html" # Tag pages are usually index.html within their slugged dir.
             punit.tagname = t # Store the original tag name.
 
+            # Construct actual HTML and destination paths for the tag page.
+            tag_html_base_path = os.path.join(self.gdict['html_root'], 'tags') # HTML path for the 'tags' directory.
+            punit.html_rel_path = os.path.join(os.path.relpath(tag_html_base_path, self.gdict['html_root']), slug) 
+            if not punit.html_rel_path.endswith('/'): # Ensure trailing slash for directory URLs
+                punit.html_rel_path += '/'
+            punit.html_path = os.path.join(tag_html_base_path, slug) 
+            if not punit.html_path.endswith('/'): # Ensure trailing slash for directory URLs
+                punit.html_path += '/'
+            punit.dest_path = os.path.join(self.gdict['dest_root'], 'tags', slug) 
+            punit.dest_file = os.path.join(punit.dest_path, punit.fname)
+
+
             # Update local dictionary for the tag page's template rendering.
-            punit.html_rel_path = os.path.join(os.path.relpath(tag_html_base_path, self.gdict['html_root']), slug) # e.g., tags/programming
-            punit.html_path = os.path.join(tag_html_base_path, slug) # E.g., /blog/tags/programming/
-            punit.dest_path = os.path.join(tag_dest, slug) # E.g., /path/to/www/blog/tags/programming/
-            punit.dest_file = os.path.join(punit.dest_path, punit.fname) # E.g., /path/to/www/blog/tags/programming/index.html
-
-
             punit.ldict['html_path'] = punit.html_path # Path for use in template links.
             punit.ldict['page_path'] = punit.html_path # Alias for html_path.
             punit.ldict['tagname'] = t # Original tag name.
             punit.ldict['children'] = val # The list of pages associated with this tag.
             punit.ldict['title'] = f"Posts tagged with '{t}'" # Dynamic title for tag page.
+            punit.ldict['permalink'] = urljoin(f"http://{self.gdict['hostname']}", punit.html_path.lstrip('/')) # Set permalink
 
             self.tag_pages.append(punit)
             self.tag_dict[t] = punit # Map tag name to its PageUnit.
@@ -306,11 +318,10 @@ class ContentTree(object):
         self.top_page = None
         if 'top' in self.template_dict:
             logging.info("Creating virtual top-level page.")
-            # The src_path for the top page is the html_top path within src_root (conceptually).
-            # This is a bit of a hack, as `PageUnit` expects a file-system path, but for a virtual
-            # page, it doesn't truly exist. We're passing it to make PageUnit constructor happy.
+            # The src_path for the top page is a dummy, as it's virtual.
             dummy_src_path = os.path.join(self.gdict['src_root'], self.gdict['html_top'].strip('/'))
-            self.top_page = PageUnit(dummy_src_path, self.gdict)
+            # Top page is virtual
+            self.top_page = PageUnit(dummy_src_path, self.gdict, is_virtual=True) 
 
             # Configure specific properties for the top page.
             self.top_page.ldict['children'] = self.level1 # Top page's children are usually level 1 pages.
@@ -318,10 +329,13 @@ class ContentTree(object):
             self.top_page.fname = 'index.html' # Top page is usually index.html.
             self.top_page.html_rel_path = "" # The top page has no relative path.
             self.top_page.html_path = self.gdict['html_top'] # Use configured HTML top for URL.
+            if not self.top_page.html_path.endswith('/'): # Ensure trailing slash
+                self.top_page.html_path += '/'
             self.top_page.dest_path = self.gdict['dest_root'] # Destination is the root build dir.
             self.top_page.dest_file = os.path.join(self.top_page.dest_path, self.top_page.fname)
             # The top page might have its own title set in config.
             self.top_page.ldict['title'] = self.gdict.get('blog_title', self.gdict.get('title', 'Homepage'))
+            self.top_page.ldict['permalink'] = urljoin(f"http://{self.gdict['hostname']}", self.top_page.html_path.lstrip('/')) # Set permalink
 
 
     ##############################################################
@@ -466,7 +480,4 @@ class ContentTree(object):
 
 
 if __name__ == '__main__':
-    # This block will only execute if content_tree.py is run directly,
-    # which is typically not how this module is intended to be used.
-    # It's primarily a class to be imported by builder.py.
-    print("This module is part of a larger static site generator and should be run via builder.py.")
+    logging.info("This module is part of a larger static site generator and should be run via builder.py.")
