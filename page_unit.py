@@ -307,7 +307,8 @@ class PageUnit(object):
 
 
         try:
-            self.ldict['content_html'] = markdown.markdown(hdict['content_raw'])
+            self.ldict['content_html'] = markdown.markdown(hdict['content_raw'],
+                                                           extensions=['extra'])
         except Exception as e:
             logging.error("parsing markdown in {}".format(self.content_file)) 
             raise e
@@ -356,7 +357,7 @@ class PageUnit(object):
         self.write_html_file(dest_file, self.html)
 
     def copy_if_newer(self, src, dest):
-        # if desitnation exists:
+        # if destination exists:
         if os.path.isfile(dest):
             if os.path.getctime(src) > os.path.getctime(dest):
                 if os.path.isdir(dest):
@@ -372,7 +373,8 @@ class PageUnit(object):
         ###print("copy media from  {}  to {}".format(src_path, html_path))
         images = []
         media = ['.jpg', '.jpeg', '.png', '.gif', '.webp',
-                 '.mp3' , '.mp4', '.html', '.pdf', '.svg', '.FCStd']
+                 '.mp3' , '.mp4', '.html', '.pdf', '.svg', '.FCStd',
+                 '.css', '.js', '.py']
         media.extend([s.upper() for s in media])
         for ext in media:
             path_glob = os.path.join(src_path, '*' + ext)
