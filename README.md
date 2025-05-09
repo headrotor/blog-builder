@@ -189,3 +189,5 @@ You can install them using pip:
 pip install markdown Mako
 ```
 
+## Program Structure:
+`builder.py` is the top-level main program. A lot of the functionality is in the content tree structure defined in `content_tree.py`
