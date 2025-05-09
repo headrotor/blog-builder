@@ -71,7 +71,7 @@ global_dict = {
     'date': '0/0/1970',                                     # Default date (overridden by content file headers).
     'year': '1970',                                         # Default year (overridden by content file headers).
     'title': 'default_title',                               # Default page title (overridden by content file headers).
-    'name': 'Jonathan Foote',                               # Author's name.
+    'name': 'Author Name',                                 # Author's name.
     'hostname': 'rotormind.com',                            # Site hostname for permalinks.
     'blog_title': 'Waxing Prolix',                          # Specific title for a blog (optional, site-specific).
     'keywords': 'unset keywords'                            # Default keywords (overridden by content file headers).
