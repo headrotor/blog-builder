@@ -1,42 +1,18 @@
-<%namespace name="blog" file="/partials.html" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html dir="ltr">
+<%inherit file="/partials.html"/>
 
-  ${blog.header()}
-    
-    <div id="content">
-      
-      <!-- Main Column (fixed) -->
-      <div id="center" class="column">
-	
-	<h2>Entries for ${year}</h2>
-	
-	
-	<ul>
-	  %for i, c in enumerate(children):
-	  <li>
-            <p>${c.ldict['date']}&nbsp<a href="${c.html_path}">${c.title}</a> </p>
-	  </li>
-	  %endfor
-	</ul>
-	
-      </div>
-      
-      <!-- end blog posts by year -->
-      
-      
-      <!-- start blogfoot.html -->
-      <div id="left" class="column">
-	
-	${blog.archives()}
-	
-	${blog.topics()}
+<%block name="main_content">
+  <h2>Entries for ${year}</h2>
 
-	<a type="application/rss+xml" href="${html_root}/${rss_file}"><img alt="RSSicon.png" src="${rss_icon}" width="16" height="16">&nbsp RSS feed</a>
+  <ul>
+    % for i, c in enumerate(children):
+    <li>
+      <p>${c.ldict['date']}&nbsp;<a href="${c.html_path}">${c.title}</a></p>
+    </li>
+    % endfor
+  </ul>
+</%block>
 
-	
-      </div>
-      
-  </body>
-</html>
-
+<%block name="right_content">
+  <!-- Optional: add widgets or navigation -->
+  <p>Browse other years or categories</p>
+</%block>

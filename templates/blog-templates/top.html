@@ -1,48 +1,23 @@
-<%namespace name="blog" file="/partials.html" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html dir="ltr">
-  
-  <!-- template: blogyear.html-->
+<%inherit file="partials.html"/>
 
-  ${blog.header()}
-  
-    <div id="content">
-      
-      <!-- Main Column (fixed) -->
-      <div id="center" class="column">
-	
-	<h2>The Whole Blog</h2>
+<%block name="main_content">
+  <h2>The Whole Blog</h2>
 
-	<ul>
-	  %for i, c in enumerate(children[::-1]):
-	  <li>
-            <p><a href="${c.html_path}">${c.title}</a> </p>
-	    <ul>
-	    %for j, c2 in enumerate(c.children):
-	    <li>${c2.ldict['date']}&nbsp<a href="${c2.html_path}">${c2.title}</a> 
-	    %endfor
-	      </ul>
-	  </li>
-	  %endfor
-	</ul>
-	
-      </div>
-      
-      <!-- end blog posts by year -->
-      
-      
-      <!-- start blogfoot.html -->
-      <div id="left" class="column">
-	
-	${blog.archives()}
-	
-	${blog.topics()}
+  <ul>
+    % for i, c in enumerate(children[::-1]):
+    <li>
+      <p><a href="${c.html_path}">${c.title}</a></p>
+      <ul>
+        % for j, c2 in enumerate(c.children):
+        <li>${c2.ldict['date']}&nbsp;<a href="${c2.html_path}">${c2.title}</a></li>
+        % endfor
+      </ul>
+    </li>
+    % endfor
+  </ul>
+</%block>
 
-	<a type="application/rss+xml" href="${html_root}/${rss_file}"><img alt="RSSicon.png" src="${rss_icon}" width="16" height="16">&nbsp RSS feed</a>
-
-	
-      </div>
-      
-  </body>
-</html>
-
+<%block name="right_content">
+  <!-- Optional sidebar items -->
+  <p>Recent posts, blogroll, or widgets here.</p>
+</%block>

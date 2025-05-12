@@ -9,7 +9,12 @@ global_dict = {
    # --- Directory and Path Configuration ---
    # 'src_root': The absolute path to the root directory where your content source files are located.
    # The generator will start copying files and data from this directory.
-    'src_root':  '/home/jtf/gith/www_source/0.blog-source/',
+   # 'src_root':  '/home/jtf/gith/www_source/0.blog-source/',
+    'src_root':  '/home/jtf/www_source/0.blog-source/',
+
+    # --- Templating Configuration ---
+    # 'template_dir': The absolute path to the directory where Mako HTML/XML templates are located.
+    'template_dir': '/home/jtf/gith/www_source/0.blog-source/templates/',
 
     # 'dest_root': The absolute path to the root directory where the generated HTML files
     # and associated assets will be written. Content will be placed one level below this root.
@@ -36,9 +41,6 @@ global_dict = {
     # 'rss_icon': The HTML path to the RSS feed icon.
     'rss_icon': '/public/RSSicon.png',
 
-    # --- Templating Configuration ---
-    # 'template_dir': The absolute path to the directory where Mako HTML/XML templates are located.
-    'template_dir': '/home/jtf/gith/www_source/0.blog-source/templates',
 
     # --- Site Behavior Configuration ---
     # 'warn_thumbnail': Boolean flag. If True, a warning will be logged if a 'thumb.*'

@@ -1,6 +1,7 @@
 # In page_unit.py
 
 import os
+import re
 import sys
 import codecs
 import markdown
@@ -12,7 +13,7 @@ from mako.template import Template
 from mako import exceptions # Added for Mako exception handling
 from urllib.parse import urljoin
 
-
+    
 class PageUnit(object):
     """
     Holds all the information and methods needed to generate a single page
@@ -441,6 +442,43 @@ class PageUnit(object):
         # --- End New Debugging Code ---
         try:
             self.html = self.template.render(**self.ldict)
+
+        except Exception:
+            # Shows filename, line number, and missing variable
+            print("🔴 Mako template rendering error:")
+            #print(exceptions.text_error_template().render())
+            # 👇 Extract referenced variables from the template source
+            referenced_vars = set(re.findall(r"\$\{([a-zA-Z_][a-zA-Z0-9_]*)\}", self.template.source))
+            #print(f"referenced vars: {referenced_vars}")
+            context_keys = set(self.ldict.keys())
+            #print(f"context_keys: {context_keys}")
+            
+            missing_keys = referenced_vars - context_keys
+            if missing_keys:
+                print("❌ Missing variables:", ", ".join(sorted(missing_keys)))
+            else:
+                print("✅ All variables seem present in ldict.")
+
+            raise  # Keep original traceback if needed
+
+        except NameError as e:
+
+            print("🔴 Template error:", str(e))  # Will now say: "Undefined variable accessed: title"
+            print("✅ ldict keys:", sorted(self.ldict.keys()))
+            raise
+            # print("🔴 Missing template variable:")
+            # print(str(e))  # Will say "Undefined"
+
+            # # Use Mako's HTML error rendering to debug context
+            # print("🧩 Rendering error context:")
+            # print(exceptions.text_error_template().render())
+
+            # # Optional: dump ldict keys
+            # print("✅ Available keys in ldict:")
+            # print(sorted(self.ldict.keys()))
+
+            # raise  # Re-raise to preserve traceback if needed
+
         except exceptions.TemplateRuntimeError as e: # Catch specific Mako runtime errors
             logging.error(f"Error rendering main template '{self.template_name}' for page '{self.html_path}': {e}")
             raise e

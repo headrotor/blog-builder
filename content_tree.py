@@ -12,6 +12,16 @@ import sys # Added for sys.exit for clean exits on critical errors.
 from page_unit import PageUnit # Imports the PageUnit class for managing individual pages.
 
 
+# from mako.runtime import StrictUndefined
+#  class LoggingUndefined(StrictUndefined):
+# #     def __str__(self):
+# #         raise NameError(f"Undefined variable accessed: {self._key}")
+
+
+
+
+
+
 class ContentTree(object):
     """
     Manages the entire content structure of the static site.
@@ -52,6 +62,7 @@ class ContentTree(object):
             logging.info(f'Found template: "{key}"')
 
 
+
     # NOTE: The 'goodpath' method is defined but not currently used anywhere in the class.
     # It appears to be an artifact or intended for future use.
     def goodpath(self, path):
@@ -80,8 +91,12 @@ class ContentTree(object):
         if gdict is None:
             gdict = self.gdict
 
-        template_dir = os.path.abspath(self.gdict['template_dir'])
-        mylookup = TemplateLookup(directories=[template_dir]) # Mako lookup for includes.
+        template_dir = os.path.abspath(self.gdict['template_dir']) + "/"
+        # Mako lookup for includes.
+        mylookup = TemplateLookup(directories=[template_dir],
+                                  input_encoding='utf-8',
+                                  strict_undefined=True)
+#                                  undefined=LoggingUndefined) 
         logging.info(f"Looking for templates in: {template_dir}")
 
         template_dict = {}
@@ -99,10 +114,12 @@ class ContentTree(object):
                     # Compile the Mako template.
                     # strict_undefined=True raises errors for undefined variables, which is good for debugging.
                     # module_directory='/tmp/mako_modules' specifies where compiled template modules are cached.
-                    template = Template(filename=uri,
-                                        lookup=mylookup,
-                                        strict_undefined=True)
-#                                       module_directory='/tmp/mako_modules') # This line was commented out.
+#                     template = Template(filename=uri,
+#                                         lookup=mylookup,
+#                                         strict_undefined=True)
+# #                                       module_directory='/tmp/mako_modules') # This line was commented out.
+
+                    template = mylookup.get_template(f)
                     template_dict[root] = template
                 except exceptions.TemplateLookupException as e:
                     logging.error(f"Error loading template '{f}': {e}")
@@ -300,12 +317,15 @@ class ContentTree(object):
 
 
             # Update local dictionary for the tag page's template rendering.
+            punit.ldict['tag'] = punit.tagname
             punit.ldict['html_path'] = punit.html_path # Path for use in template links.
             punit.ldict['page_path'] = punit.html_path # Alias for html_path.
             punit.ldict['tagname'] = t # Original tag name.
             punit.ldict['children'] = val # The list of pages associated with this tag.
+            punit.ldict['tag_posts'] = val # The list of pages associated with this tag.
             punit.ldict['title'] = f"Posts tagged with '{t}'" # Dynamic title for tag page.
             punit.ldict['permalink'] = urljoin(f"http://{self.gdict['hostname']}", punit.html_path.lstrip('/')) # Set permalink
+
 
             self.tag_pages.append(punit)
             self.tag_dict[t] = punit # Map tag name to its PageUnit.
@@ -376,7 +396,10 @@ class ContentTree(object):
                 else:
                     logging.debug(f"Skipping stale tag page (incremental build): {punit.dest_file}")
             else:
-                # Full build: render all tag pages.
+                t = punit.tagname
+                
+                # Re-render tag page only if a page associated with this tag was updated.
+                logging.info(f"Creating tag page: {punit.dest_file}")
                 punit.render(self.template_dict, self.page_dict)
 
             # punit.print_my_paths() # Debugging aid.
